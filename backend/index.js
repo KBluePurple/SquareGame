@@ -118,9 +118,7 @@ function getUUID() {
 
 server.on('connection', (socket) => {
     socket.uuid = getUUID();
-    console.log('Client connected');
     socket.on('message', (data) => {
-        console.log('Message received: ' + data);
         const message = JSON.parse(data);
         const type = message.type;
         const content = message.content;
@@ -129,7 +127,6 @@ server.on('connection', (socket) => {
             console.log(entities);
             Object.keys(entities).forEach((key) => {
                 const entity = entities[key];
-                console.log(key);
                 try {
                     socket.send(JSON.stringify(new Data('join', { uuid: key, x: entity.x, y: entity.y, color: entity.color })));
                 }

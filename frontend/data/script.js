@@ -43,14 +43,12 @@ class Square {
     }
 
     move(vector) {
-        if (this.color == "white") {
-            if (vector.x != 0 || vector.y != 0) {
-                vector = vector.nomalize();
-                vector = vector.mul(this.speed);
-                this.x += vector.x;
-                this.y += vector.y;
-                this.clamp();
-            }
+        if (vector.x != 0 || vector.y != 0) {
+            vector = vector.nomalize();
+            vector = vector.mul(this.speed);
+            this.x += vector.x;
+            this.y += vector.y;
+            this.clamp();
         }
     }
 
@@ -59,6 +57,17 @@ class Square {
         this.x = Math.min(this.x, mapSize - this.size / 2);
         this.y = Math.max(this.y, -mapSize + this.size / 2);
         this.y = Math.min(this.y, mapSize - this.size / 2);
+    }
+
+    update() {
+        if (this.targetPos.distance(new Vector(this.x, this.y)) > this.speed) {
+            let vector = this.targetPos.sub(new Vector(this.x, this.y));
+            this.move(vector);
+        }
+        else {
+            this.x = this.targetPos.x;
+            this.y = this.targetPos.y;
+        }
     }
 }
 
@@ -102,34 +111,37 @@ class Vector {
 let count = 0;
 function update() {
     for (const [key, entity] of Object.entries(entities)) {
+        entity.update();
         entity.draw();
     }
 
-    let moveVector = new Vector(0, 0);
-    if (keyDict['w'] || keyDict['ArrowUp']) {
-        moveVector = moveVector.add(new Vector(0, -1));
-    }
-    if (keyDict['s'] || keyDict['ArrowDown']) {
-        moveVector = moveVector.add(new Vector(0, 1));
-    }
-    if (keyDict['a'] || keyDict['ArrowLeft']) {
-        moveVector = moveVector.add(new Vector(-1, 0));
-    }
-    if (keyDict['d'] || keyDict['ArrowRight']) {
-        moveVector = moveVector.add(new Vector(1, 0));
-    }
-    player.move(moveVector);
+    if (player.color == "white") {
+        let moveVector = new Vector(0, 0);
+        if (keyDict['w'] || keyDict['ArrowUp']) {
+            moveVector = moveVector.add(new Vector(0, -1));
+        }
+        if (keyDict['s'] || keyDict['ArrowDown']) {
+            moveVector = moveVector.add(new Vector(0, 1));
+        }
+        if (keyDict['a'] || keyDict['ArrowLeft']) {
+            moveVector = moveVector.add(new Vector(-1, 0));
+        }
+        if (keyDict['d'] || keyDict['ArrowRight']) {
+            moveVector = moveVector.add(new Vector(1, 0));
+        }
+        player.move(moveVector);
 
-    if (touching) {
-        let direction = new Vector(touchCurrentPos.x - touchStartPos.x, touchCurrentPos.y - touchStartPos.y);
-        direction = direction.nomalize();
-        let length = (touchStartPos.distance(touchCurrentPos) > 10 ? 10 : touchStartPos.distance(touchCurrentPos)) / 10;
-        if (length != 0) {
-            length = player.speed * (length > 1 ? 1 : length);
-            direction = direction.mul(length);
-            player.x += direction.x;
-            player.y += direction.y;
-            player.clamp();
+        if (touching) {
+            let direction = new Vector(touchCurrentPos.x - touchStartPos.x, touchCurrentPos.y - touchStartPos.y);
+            direction = direction.nomalize();
+            let length = (touchStartPos.distance(touchCurrentPos) > 3 ? 3 : touchStartPos.distance(touchCurrentPos)) / 3;
+            if (length != 0) {
+                length = player.speed * (length > 1 ? 1 : length);
+                direction = direction.mul(length);
+                player.x += direction.x;
+                player.y += direction.y;
+                player.clamp();
+            }
         }
     }
 
@@ -180,7 +192,6 @@ function init() {
     setInterval(() => {
         if (ws.readyState == WebSocket.OPEN) {
             if (previousPos.distance(new Vector(player.x, player.y)) > 0.1) {
-                console.log("send");
                 ws.send(JSON.stringify(new Data("move", new Vector(player.x, player.y))));
                 previousPos = new Vector(player.x, player.y);
             }
@@ -190,13 +201,12 @@ function init() {
     ws.onmessage = (event) => {
         const { type, content } = JSON.parse(event.data);
         if (type == "join") {
-            console.log(content);
             entities[content.uuid] = new Square(content.x, content.y, 5, 2, content.color);
         }
         else if (type == "move") {
-            console.log(entities[content.uuid]);
-            entities[content.uuid].x = content.x;
-            entities[content.uuid].y = content.y;
+            // entities[content.uuid].x = content.x;
+            // entities[content.uuid].y = content.y;
+            entities[content.uuid].targetPos = new Vector(content.x, content.y);
         }
         else if (type == "leave") {
             delete entities[content.uuid];
