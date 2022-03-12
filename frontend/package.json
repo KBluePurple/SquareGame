@@ -4,12 +4,23 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "pkg ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.3"
+  },
+  "bin": "./bin/www",
+  "pkg": {
+    "main": "index.js",
+    "module": "index.js",
+    "assets": [
+      "data/*"
+    ]
+  },
+  "devDependencies": {
+    "pkg": "^5.5.2"
   }
 }
