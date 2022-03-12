@@ -19,8 +19,5 @@
     "assets": [
       "data/*"
     ]
-  },
-  "devDependencies": {
-    "pkg": "^5.5.2"
   }
 }
