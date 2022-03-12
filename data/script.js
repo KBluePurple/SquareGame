@@ -132,15 +132,17 @@ function update() {
         player.move(moveVector);
 
         if (touching) {
-            let direction = new Vector(touchCurrentPos.x - touchStartPos.x, touchCurrentPos.y - touchStartPos.y);
-            direction = direction.nomalize();
-            let length = (touchStartPos.distance(touchCurrentPos) > 3 ? 3 : touchStartPos.distance(touchCurrentPos)) / 3;
-            if (length != 0) {
-                length = player.speed * (length > 1 ? 1 : length);
-                direction = direction.mul(length);
-                player.x += direction.x;
-                player.y += direction.y;
-                player.clamp();
+            if (moveVector.length() <= 0) {
+                let direction = new Vector(touchCurrentPos.x - touchStartPos.x, touchCurrentPos.y - touchStartPos.y);
+                direction = direction.nomalize();
+                let length = (touchStartPos.distance(touchCurrentPos) > 3 ? 3 : touchStartPos.distance(touchCurrentPos)) / 3;
+                if (length != 0) {
+                    length = player.speed * (length > 1 ? 1 : length);
+                    direction = direction.mul(length);
+                    player.x += direction.x;
+                    player.y += direction.y;
+                    player.clamp();
+                }
             }
         }
     }
@@ -225,7 +227,7 @@ function init() {
             delete entities[key];
         }
         player.color = "gray";
-        subMessage = "Wait for connecting...";
+        subMessage = "refresh to connect...";
     }
 }
 
