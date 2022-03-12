@@ -1,21 +1,3 @@
-@-ms-viewport {
-    max-zoom: 1;
-    min-zoom: 1;
-    user-zoom: 1;
-}
-
-@-o-viewport {
-    max-zoom: 1;
-    min-zoom: 1;
-    user-zoom: 1;
-}
-
-@viewport {
-    max-zoom: 1;
-    min-zoom: 1;
-    user-zoom: 1;
-}
-
 html, body {
     cursor: none;
     overscroll-behavior: contain;
