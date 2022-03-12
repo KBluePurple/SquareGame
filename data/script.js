@@ -1,4 +1,4 @@
-var server = "wss://https://square-game-back.herokuapp.com:9000/";
+var server = "wss://https://square-game-back.herokuapp.com/";
 
 /** @type {WebSocket} */
 var ws;
