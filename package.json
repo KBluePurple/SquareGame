@@ -4,20 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "pkg ."
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.3"
-  },
-  "bin": "./bin/www",
-  "pkg": {
-    "main": "index.js",
-    "module": "index.js",
-    "assets": [
-      "data/*"
-    ]
+    "express": "^4.17.3",
+    "ws": "^8.5.0"
   }
 }
