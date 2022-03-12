@@ -1,6 +1,6 @@
 const { on, EventEmitter } = require('events');
-const ws = require('ws');
 
+const ws = require('ws');
 const server = new ws.Server({ port: process.env.PORT || 9000 });
 
 class Data {
