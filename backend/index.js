@@ -19,70 +19,12 @@ class Square {
         this.color = color;
         this.socket = socket;
     }
-
-    setPosition(vector) {
-        this.x = vector.x;
-        this.y = vector.y;
-    }
-
-    draw() {
-        context.fillStyle = this.color;
-        context.fillRect(this.x - (this.size / 2), this.y - (this.size / 2), this.size, this.size);
-    }
-
-    move(vector) {
-        if (this.color == "white") {
-            if (vector.x != 0 || vector.y != 0) {
-                vector = vector.nomalize();
-                vector = vector.mul(this.speed);
-                this.x += vector.x;
-                this.y += vector.y;
-                this.clamp();
-            }
-        }
-    }
-
-    clamp() {
-        this.x = Math.max(this.x, -mapSize + this.size / 2);
-        this.x = Math.min(this.x, mapSize - this.size / 2);
-        this.y = Math.max(this.y, -mapSize + this.size / 2);
-        this.y = Math.min(this.y, mapSize - this.size / 2);
-    }
 }
 
 class Vector {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-    }
-
-    length() {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
-    }
-
-    nomalize() {
-        let length = this.length();
-        return new Vector(this.x / length, this.y / length);
-    }
-
-    add(vector) {
-        return new Vector(this.x + vector.x, this.y + vector.y);
-    }
-
-    sub(vector) {
-        return new Vector(this.x - vector.x, this.y - vector.y);
-    }
-
-    mul(scalar) {
-        return new Vector(this.x * scalar, this.y * scalar);
-    }
-
-    distance(vector) {
-        return Math.sqrt(Math.pow(this.x - vector.x, 2) + Math.pow(this.y - vector.y, 2));
-    }
-
-    equals(vector) {
-        return this.x == vector.x && this.y == vector.y;
     }
 }
 
