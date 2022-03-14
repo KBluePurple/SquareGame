@@ -165,7 +165,21 @@ function clearScreen() {
 
 function init() {
     canvas = document.getElementById("canvas");
-    canvas.requestFullscreen();
+
+    try {
+        if (canvas.requestFullscreen)
+            canvas.requestFullscreen();
+        else if (canvas.mozRequestFullScreen)
+            canvas.mozRequestFullScreen();
+        else if (canvas.webkitRequestFullscreen)
+            canvas.webkitRequestFullscreen();
+        else if (canvas.msRequestFullscreen)
+            canvas.msRequestFullscreen();
+    }
+    catch (e) {
+        console.log(e);
+    }
+
     context = canvas.getContext("2d");
     player = new Square(randomRange(-150, 150), randomRange(-150, 150), 5, 2, "white");
 
