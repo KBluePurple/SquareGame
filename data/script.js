@@ -165,6 +165,7 @@ function clearScreen() {
 
 function init() {
     canvas = document.getElementById("canvas");
+    canvas.requestFullscreen();
     context = canvas.getContext("2d");
     player = new Square(randomRange(-150, 150), randomRange(-150, 150), 5, 2, "white");
 
