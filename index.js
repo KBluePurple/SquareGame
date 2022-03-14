@@ -19,6 +19,11 @@ class Square {
         this.color = color;
         this.socket = socket;
     }
+
+    setPosition(vector) {
+        this.x = vector.x;
+        this.y = vector.y;
+    }
 }
 
 class Vector {
